@@ -107,7 +107,7 @@ export default function Nav({ openNav, onCloseNav }) {
             sx: {
               width: NAV_WIDTH,
               background:'blue',
-              bgcolor: '#DDA0DD',
+              bgcolor: 'background.default',
               borderRightStyle: 'dashed',
             },
           }}
