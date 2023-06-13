@@ -7,6 +7,7 @@ import { Grid, Container } from '@mui/material';
 import AppWidgetSummaryOne from '../../sections/@dashboard/app/AppWidgetSummaryOne';
 import AppWidgetSummaryTwo from '../../sections/@dashboard/app/AppWidgetSummaryTwo';
 import AppWidgetSummaryThree from '../../sections/@dashboard/app/AppWidgetSummaryThree';
+import AppWidgetSummaryMany from '../../sections/@dashboard/app/AppWidgetSummaryMany';
 import dashboardService from '../../services/dashboard.service';
 import headerService from '../../services/header.service';
 import partnerService from '../../services/partner.service';
@@ -51,6 +52,16 @@ export default function Report() {
                 console.log(response.data)
                 localStorage.setItem("token", JSON.stringify(response.data.data));
                 setSuccess(!success)
+              }else {
+                partnerService.refreshToken(token).then(
+                  response => {
+                    if(response.data && response.data.success === true) {                
+                      localStorage.setItem("token", JSON.stringify(response.data.data));
+                      setSuccess(!success)
+                    } else {
+                      window.location.assign('/login')
+                    }
+                  })
               }
             }
           )
@@ -159,7 +170,7 @@ export default function Report() {
           </Grid>
           
           <Grid item xs={12} sm={6} md={4}>
-            <AppWidgetSummaryTwo title="Product Items" isActive={itemCategory}    color="info"/>
+            <AppWidgetSummaryMany title="Product Items" isActive={itemCategory}    color="info"/>
           </Grid>
         </Grid>
       </Container>

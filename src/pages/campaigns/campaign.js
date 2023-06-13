@@ -143,12 +143,12 @@ export default function Campaign() {
       CampaignService.DeleteCampaignById(id).then(
         response => { 
           if (response.data && response.data.success) {
-            alert(noti.DELETE_SUCCESS)
+            alert(response.data.message);
             setSuccess(!success);
           }
           
         }, error => {
-          alert(noti.ERROR)
+          alert(error.response.data.message);
           setSuccess(!success)
         }
       )
@@ -178,12 +178,12 @@ export default function Campaign() {
         CampaignService.CampaignEnableByCampaignId(campaignId).then(
           response => {
             if(response.data  && response.data.success) {
-              alert(noti.ENABLE_SUCCESS);
+              alert(response.data.message);
               setOpenEnable(false)
               setSuccess(!success)
             }
           } , error => {
-            alert(noti.ERROR)
+            alert(error.response.data.message);
             setSuccess(!success)
           }
         )
@@ -193,13 +193,13 @@ export default function Campaign() {
         CampaignService.CampaignDisableByCampaignId(campaignId).then(
           response => {
             if(response.data  && response.data.success) {
-              alert(noti.DISABLE_SUCCESS);
+              alert(response.data.message);
               setOpenEnable(false)
               setSuccess(!success)
             }
             
           }, error => {
-            alert(noti.ERROR)
+            alert(error.response.data.message);
             setSuccess(!success)
           }
         )        
@@ -262,6 +262,16 @@ export default function Campaign() {
               if(response.data && response.data.success === true) {                
                 localStorage.setItem("token", JSON.stringify(response.data.data));
                 setSuccess(!success)
+              } else {
+                partnerService.refreshToken(token).then(
+                  response => {
+                    if(response.data && response.data.success === true) {                
+                      localStorage.setItem("token", JSON.stringify(response.data.data));
+                      setSuccess(!success)
+                    } else {
+                      window.location.assign('/login')
+                    }
+                  })
               }
             }, error => {
               console.log(error)

@@ -280,12 +280,15 @@ export default function CampaignDetail(props) {
             CampaignService.PostCampaign(campaignInfo, campaignVoucherSeriesList).then(
                 response => {
                     if(response.data && response.data.success) {
-                        alert(noti.CREATE_SUCCESS)
+                      alert(response.data.message);
                         window.location.assign('/campaign')
                     }
                 }, error => {
-                    alert(noti.WRONG_DATA)
-                    setSuccess(!success);
+                  console.log(error.response)
+                  if(error.response && error.response.data && !error.response.data.success ) {
+                    alert(error.response.data.message)
+                  }                    
+                  setSuccess(!success);
                 }
             )
         } else {
@@ -375,6 +378,16 @@ export default function CampaignDetail(props) {
                     if(response.data && response.data.success === true) {                
                       localStorage.setItem("token", JSON.stringify(response.data.data));
                       setSuccess(!success)
+                    } else {
+                      partnerService.refreshToken(token).then(
+                        response => {
+                          if(response.data && response.data.success === true) {                
+                            localStorage.setItem("token", JSON.stringify(response.data.data));
+                            setSuccess(!success)
+                          } else {
+                            window.location.assign('/login')
+                          }
+                        })
                     }
                   }, error => {
                     console.log(error)

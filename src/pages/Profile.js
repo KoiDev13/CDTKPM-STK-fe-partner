@@ -285,9 +285,10 @@ const handleChangeOtp = (event) => {
         partnerService.UpdatePartner(name, gender, dateOfBirth, address, partnerType, company).then(
           response => {
             if(response.data && response.data.success === true) {
-              alert(noti.EDIT_SUCCESS);
+              alert(response.data.message);
             }
           }, error => {
+            alert(error.response.data.message);
             setSuccess(!success)
           }
         )
@@ -295,10 +296,11 @@ const handleChangeOtp = (event) => {
         partnerService.UpdatePartner(name, gender, dateOfBirth, address, partnerType).then(
           response => {
             if(response.data && response.data.success === true) {
-              alert(noti.EDIT_SUCCESS);
+              alert(response.data.message);
 
             }
           }, error => {
+            alert(error.response.data.message);
             setSuccess(!success)
           }
         )
@@ -324,13 +326,16 @@ const handleChangeOtp = (event) => {
           partnerService.changePassword(oldPassword, newPassword).then(
             response => {
               if(response.data && response.data.success === true) {
-                alert(noti.EDIT_SUCCESS)
+                alert(response.data.message);
                 setOpen(false)
                 setOldPassword("");
                 setNewPassword("")
                 setConfirmPassword("")
+              } else{
+                alert(response.data.message)
               }
             }, error => {
+              alert(error.response.data.message)
               setSuccess(!success)
             }
           )

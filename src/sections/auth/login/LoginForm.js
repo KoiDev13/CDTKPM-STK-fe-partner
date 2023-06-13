@@ -31,7 +31,7 @@ export default function LoginForm() {
       service.login(userName, password).then(
         response => {
           if(response.data.success && response.data.data) {
-            
+            alert(response.data.message);
             localStorage.setItem("user", JSON.stringify(response.data.data.account));
             localStorage.setItem("token", JSON.stringify(response.data.data.token)) 
             window.location.assign('/');
@@ -39,7 +39,8 @@ export default function LoginForm() {
           console.log(response.data);
           
         }, error =>{
-          alert(noti.CHECK_LOGIN)
+          alert(error.response.data.message);
+          
         }
       )
     } else {
