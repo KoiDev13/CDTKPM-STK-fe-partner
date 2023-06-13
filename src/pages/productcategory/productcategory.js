@@ -195,6 +195,16 @@ export default function ProductCategory() {
               if(response.data && response.data.success === true) {                
                 localStorage.setItem("token", JSON.stringify(response.data.data));
                 setSuccess(!success)
+              } else {
+                partnerService.refreshToken(token).then(
+                  response => {
+                    if(response.data && response.data.success === true) {                
+                      localStorage.setItem("token", JSON.stringify(response.data.data));
+                      setSuccess(!success)
+                    } else {
+                      window.location.assign('/login')
+                    }
+                  })
               }
             }, error => {
               console.log(error)

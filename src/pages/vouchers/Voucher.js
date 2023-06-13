@@ -153,7 +153,7 @@ export default function Voucher() {
       voucherService.DeleteVoucherById(id).then(
         response => { 
           if (response.data && response.data.success) {
-            alert(noti.DELETE_SUCCESS)
+            alert(response.data.message);
             setSuccess(!success);
           }
           
@@ -208,14 +208,14 @@ export default function Voucher() {
         voucherService.PostVoucher(name, description).then(
           response => { 
             if(response.data && response.data.success) {
-              alert(noti.CREATE_SUCCESS)
+              alert(response.data.message);
               setSuccess(!success)
               setOpen(false);  
               clearScreen();    
             }
             
           }, error => {
-            alert(noti.WRONG_DATA)
+            alert(error.response.data.message);
             setSuccess(!success)
           }
         )
@@ -223,14 +223,14 @@ export default function Voucher() {
         voucherService.PutVoucherById(name, description, voucherId).then(
           response => { 
             if(response.data && response.data.success) {
-              alert(noti.EDIT_SUCCESS)
+              alert(response.data.message);
               setSuccess(!success)
               setOpen(false);  
               clearScreen();  
             }
             
           }, error => {
-            alert(noti.WRONG_DATA)
+            alert(error.response.data.message);
             setSuccess(!success)
           }
         )
@@ -263,6 +263,16 @@ export default function Voucher() {
               if(response.data && response.data.success === true) {                
                 localStorage.setItem("token", JSON.stringify(response.data.data));
                 setSuccess(!success)
+              }else {
+                partnerService.refreshToken(token).then(
+                  response => {
+                    if(response.data && response.data.success === true) {                
+                      localStorage.setItem("token", JSON.stringify(response.data.data));
+                      setSuccess(!success)
+                    } else {
+                      window.location.assign('/login')
+                    }
+                  })
               }
             }, error => {
               console.log(error)
